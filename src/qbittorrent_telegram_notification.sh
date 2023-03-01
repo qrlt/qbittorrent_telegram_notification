@@ -10,14 +10,7 @@ CHAT_ID="ADD_YOUR_TELEGRAM_CHAT_ID"
 TORRENT_NAME="$1"
 
 # Notification message
-# If you need a line break, use "%0A" instead of "\n".
-MESSAGE="<strong>Download Completed</strong>%0A${TORRENT_NAME}%0A"
-
-# Prepares the request payload
-PAYLOAD="https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${MESSAGE}&parse_mode=HTML"
+MESSAGE="Download Completed %0A${TORRENT_NAME}%0A"
 
 # Sends the notification to the telegram bot and save the response content into the notificationsLog.txt
-curl -S -X POST "${PAYLOAD}" -w "\n\n" | tee -a notificationsLog.txt
-
-# Prints a info message in the console
-echo "[${TORRENT_NAME}] Download completed. Telegram notification sent."
+curl -s --data "text=$MESSAGE" --data "chat_id=$CHAT_ID" 'https://api.telegram.org/bot'$BOT_TOKEN'/sendMessage' | tee -a notificationsLog.txt
